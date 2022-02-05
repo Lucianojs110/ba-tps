@@ -2,7 +2,7 @@
 
 
 
-## BACKEND PROCER 
+## BACKEND TPS
 
 Luego de clonar el repositorio ejecutar los siguientes comandos 
 
