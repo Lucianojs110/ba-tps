@@ -24,6 +24,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'id_role'
     ];
 
     /**
@@ -45,15 +46,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function roles()
-    {
-        return $this->belongsToMany (Role::class)->withTimestamps();
+    public function role(){
+        return $this->hasOne('App\Models\Role',  'id', 'id_role');
     }
 
-    public function assign_role($role)
-    {
-        $this->roles()->sync($role, false);
-    }
 
-    
 }

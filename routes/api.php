@@ -31,10 +31,6 @@ Route::apiResource('users', 'UserController')->middleware('auth:sanctum');
 /*//////ROLES ROUTES/////*/
 Route::apiResource('roles', 'RoleController')->middleware('auth:sanctum');
 
-/*//////REGISTRO PYME  ROUTES/////*/
-Route::post('/registro_pyme', 'RegisterController@store_pyme');
 
-/*//////REGISTRO EAE ROUTES/////*/
-Route::post('/registro_eae', 'RegisterController@store_eae');
 
 

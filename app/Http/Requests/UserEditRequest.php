@@ -29,7 +29,7 @@ class UserEditRequest extends FormRequest
             'email' => 'required|email|unique:users,email,'.$this->user->id,
             'password' => 'min:6',
             'password' => 'min:6|max:30',
-            'role' => 'required'
+            'id_role' => 'required'
         ];
     }
 }
