@@ -24,7 +24,32 @@ class RoleController extends Controller
 
         return response()->json([
             'message' => 'Se ha creado el Rol correctamente',
-            'user' => $rol
+            'rol' => $rol
+        ]);
+    }
+
+    public function update(Request $request,$id){
+
+        $rol = Role::find($id);
+        $rol->name =  $request->get('name');
+        $rol->update();
+
+        return response()->json([
+            'message' => 'Se ha actualizado correctamente el Rol',
+            'rol' => $rol
+        ]);
+        
+
+    }
+
+    public function destroy($id){
+        
+        $rol = Role::find($id);
+        $rol->delete();
+
+        return response()->json([
+            'message' => 'Se ha elminado el Rol correctamente',
+            'rol' => $rol
         ]);
     }
 }
