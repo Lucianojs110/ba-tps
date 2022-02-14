@@ -20,21 +20,21 @@ class UserController extends Controller
         return  User::With('role')->get();
     }
 
-    public function store(UserRegisterRequest $request){
-
+    public function store(/* UserRegister */Request $request){
+        /* Log::channel('events')->info('request'.$request->get('id_role')); */
     
         $user = new User();
         $user->name = request('name');
         $user->last_name = request('last_name');
         $user->email = request('email');
+        $user->id_role = $request->get('id_role');
         $user->password = Hash::make(request('password'));
-        $user->id_role = request('id_role');
         $user->save();
        
         $userRes = User::With('role')->findorFail($user->id);
 
         //log event//
-        Log::channel('events')->info('Registered user: ip address: '.$request->ip().' | User id: '.$request->user().' | User id create: '.$user);
+        //Log::channel('events')->info('Registered user: ip address: '.$request->ip().' | User id: '.$request->user().' | User id create: '.$user);
 
         return response()->json([
             'message' => 'Se ha creado el usuario correctamente',
@@ -55,7 +55,7 @@ class UserController extends Controller
         $user->name = $request->get('name');
         $user->last_name = $request->get('last_name');
         $user->email = $request->get('email');
-        $user->id_role = request('id_role');
+        $user->id_role = $request->get('rol');
         $pass = $request->get('password');
         if ($pass != null) {
             $user->password = Hash::make(request('password'));
@@ -67,7 +67,7 @@ class UserController extends Controller
         $userRes = User::With('role')->findorFail($user->id);
         
         //log event//
-        Log::channel('events')->info('Update User: ip address: '.$request->ip().' | User id: '.$request->user()->id.' | User Update id: '.$user->id);
+        //Log::channel('events')->info('Update User: ip address: '.$request->ip().' | User id: '.$request->user()->id.' | User Update id: '.$user->id);
 
         return response()->json([
             'message' => 'Se ha actualizado el usuario correctamente',
