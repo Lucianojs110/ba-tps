@@ -27,8 +27,9 @@ class UserController extends Controller
         $user->name = request('name');
         $user->last_name = request('last_name');
         $user->email = request('email');
-        $user->id_role = $request->get('id_role');
+        $user->id_role = request('rol');
         $user->password = Hash::make(request('password'));
+        Log::channel('events')->info('request'.$request);
         $user->save();
        
         $userRes = User::With('role')->findorFail($user->id);
