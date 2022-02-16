@@ -77,13 +77,14 @@ class UserController extends Controller
        
     }
 
-    public function destroy(Request $request, User $user)
+    public function destroy($id)
     {
         //policy//
-        $this->authorize('destroy', User::class);
+        //$this->authorize('destroy', User::class);
 
         //log event//
-        Log::channel('events')->info('Delete User: ip address: '.$request->ip().' | User id: '.$request->user()->id.' | User Delete id: '.$user->id);
+        //Log::channel('events')->info('Delete User: ip address: '.$request->ip().' | User id: '.$request->user()->id.' | User Delete id: '.$user->id);
+        $user = User::find($id);
         $user->delete();
         return response()->json([
             'message' => 'Se ha elminado el usuario correctamente',
