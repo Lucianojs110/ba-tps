@@ -50,9 +50,10 @@ class UserController extends Controller
         return  User::With('role')->findorFail($id);
     }
 
-    public function update(UserEditRequest $request, User $user)
+    public function update(Request $request,$id)
     {
-    
+        $user = User::find($id);
+
         $user->name = $request->get('name');
         $user->last_name = $request->get('last_name');
         $user->email = $request->get('email');
@@ -63,12 +64,10 @@ class UserController extends Controller
         } else {
             unset($user->password);
         }
-        
+        Log::channel('events')->info('request'.$request);
         $user->update();
         $userRes = User::With('role')->findorFail($user->id);
-        
-        //log event//
-        //Log::channel('events')->info('Update User: ip address: '.$request->ip().' | User id: '.$request->user()->id.' | User Update id: '.$user->id);
+    
 
         return response()->json([
             'message' => 'Se ha actualizado el usuario correctamente',
