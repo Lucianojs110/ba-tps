@@ -56,7 +56,10 @@ class ProveedorController extends Controller
         $proveedor->telefono = request('telefono');
         $proveedor->update();
         
-        Log::channel('events')->info('request'.$request);
+       //log event//
+       Log::channel('events')->info('Update proveedor: ip address: '.$request->ip().
+       ' | Usuario id: '.$request->user()->id.
+       ' | proveedor: ' .$proveedor);
         
         $provRes = Proveedor::findorFail($proveedor->id);
     
@@ -75,11 +78,11 @@ class ProveedorController extends Controller
         $proveedor->delete();
         
         //log event//
-        Log::channel('events')->info('Eliminar Proveedor: '.$proveedor->id);
+        Log::channel('events')->info('Eliminar Proveedor: '.$proveedor);
         
         return response()->json([
-            'message' => 'Se ha elminado el usuario correctamente',
-            'user' => $proveedor
+            'message' => 'Se ha elminado el Proveedor correctamente',
+            'cliente' => $proveedor
         ]);
     }
 }
