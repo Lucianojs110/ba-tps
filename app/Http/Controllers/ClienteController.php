@@ -57,7 +57,7 @@ class ClienteController extends Controller
         $cliente->update();
         
         //log event//
-        Log::channel('events')->info('Update cliente: ip address: '.$request->ip().
+        Log::channel('events')->info('Actualizar cliente: ip address: '.$request->ip().
                                     ' | Usuario id: '.$request->user()->id.
                                     ' | cliente: ' .$cliente);
         

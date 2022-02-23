@@ -57,7 +57,7 @@ class ProveedorController extends Controller
         $proveedor->update();
         
        //log event//
-       Log::channel('events')->info('Update proveedor: ip address: '.$request->ip().
+       Log::channel('events')->info('Actualizar proveedor: ip address: '.$request->ip().
        ' | Usuario id: '.$request->user()->id.
        ' | proveedor: ' .$proveedor);
         
