@@ -27,7 +27,7 @@ class UserRegisterRequest extends FormRequest
             'name' => 'required|max:60',
             'last_name' => 'required|max:60',
             'email' => 'required|email|max:30|unique:users',
-            'id_role' => 'required',
+            'rol' => 'required',
             'password' => 'required|min:4',
 
         ];

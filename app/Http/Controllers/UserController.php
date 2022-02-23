@@ -20,8 +20,8 @@ class UserController extends Controller
         return  User::With('role')->get();
     }
 
-    public function store(/* UserRegister */Request $request){
-        /* Log::channel('events')->info('request'.$request->get('id_role')); */
+    public function store(Request $request){
+    
     
         $user = new User();
         $user->name = request('name');
@@ -35,7 +35,7 @@ class UserController extends Controller
         $userRes = User::With('role')->findorFail($user->id);
 
         //log event//
-        //Log::channel('events')->info('Registered user: ip address: '.$request->ip().' | User id: '.$request->user().' | User id create: '.$user);
+        Log::channel('events')->info('Usuario registrado: ip address: '.$request->ip().' | Usuario id: '.$request->user().' | Usuario id creado: '.$user);
 
         return response()->json([
             'message' => 'Se ha creado el usuario correctamente',
@@ -64,6 +64,7 @@ class UserController extends Controller
         } else {
             unset($user->password);
         }
+        
         Log::channel('events')->info('request'.$request);
         $user->update();
         $userRes = User::With('role')->findorFail($user->id);
@@ -78,13 +79,13 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        //policy//
-        //$this->authorize('destroy', User::class);
-
-        //log event//
-        //Log::channel('events')->info('Delete User: ip address: '.$request->ip().' | User id: '.$request->user()->id.' | User Delete id: '.$user->id);
+    
         $user = User::find($id);
         $user->delete();
+        
+        //log event//
+        Log::channel('events')->info('Delete User: '.$user->id);
+        
         return response()->json([
             'message' => 'Se ha elminado el usuario correctamente',
             'user' => $user

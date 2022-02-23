@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\RoleUser;
 use App\Models\User;
+use App\Models\TipoGrano;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -35,8 +36,17 @@ class DatabaseSeeder extends Seeder
         $user->id_role = 1;
         $user->save();
 
-       
+        $grano = new TipoGrano();
+        $grano->nombre = 'Soja';
+        $grano->save();
 
+        $grano = new TipoGrano();
+        $grano->nombre = 'Girasol';
+        $grano->save();
+
+        $grano = new TipoGrano();
+        $grano->nombre = 'Maíz';
+        $grano->save();
        
     }
 }

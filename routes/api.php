@@ -31,6 +31,9 @@ Route::apiResource('users', 'UserController')->middleware('auth:sanctum');
 /*//////ROLES ROUTES/////*/
 Route::apiResource('roles', 'RoleController')->middleware('auth:sanctum');
 
+/*//////PROVEEDOR RULES/////*/
+Route::apiResource('proveedores', 'ProveedorController')->middleware('auth:sanctum');
+
 
 
 
