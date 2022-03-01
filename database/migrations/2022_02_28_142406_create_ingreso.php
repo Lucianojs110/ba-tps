@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCala extends Migration
+class CreateIngreso extends Migration
 {
     /**
      * Run the migrations.
@@ -19,20 +19,26 @@ class CreateCala extends Migration
             $table->string('nombre', 50);    
         });
         
-        Schema::create('calas', function (Blueprint $table) {
+        Schema::create('ingresos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('proveedor_id');
-            $table->dateTime('entrada');
-            $table->unsignedBigInteger('tipo_grano_id');
+            $table->unsignedBigInteger('id_proveedor');
+            $table->date('fecha_entrada');
+            $table->time('hora_entrada');
+            $table->unsignedBigInteger('id_tipo_grano');
             $table->decimal('cantidad', 10, 2)->nullable();
             $table->string('condicion', 20)->nullable();
             $table->string('humedad', 20)->nullable();
             $table->string('num_carta_porte', 30)->nullable();
             $table->timestamps();
 
-            $table->foreign('tipo_grano_id')
+            $table->foreign('id_tipo_grano')
             ->references('id')
             ->on('tipo_grano')
+            ->onDelete('cascade');
+
+            $table->foreign('id_proveedor')
+            ->references('id')
+            ->on('proveedores')
             ->onDelete('cascade');
         });
     }
@@ -44,6 +50,6 @@ class CreateCala extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cala');
+        Schema::dropIfExists('ingreso');
     }
 }

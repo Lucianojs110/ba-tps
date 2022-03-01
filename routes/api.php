@@ -28,6 +28,9 @@ Route::apiResource('proveedores', 'ProveedorController')->middleware('auth:sanct
 /*//////CLIENTES/////*/
 Route::apiResource('clientes', 'ClienteController')->middleware('auth:sanctum');
 
+/*//////INGRESO/////*/
+Route::apiResource('ingreso', 'IngresoController')->middleware('auth:sanctum');
+
 
 
 
