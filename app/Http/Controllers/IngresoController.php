@@ -53,7 +53,8 @@ class IngresoController extends Controller
         $ingreso = Ingreso::find($id);
 
         $ingreso->id_proveedor = request('id_proveedor');
-        $ingreso->entrada = request('entrada');
+        $ingreso->fecha_entrada = request('fecha_entrada');
+        $ingreso->hora_entrada = request('hora_entrada');
         $ingreso->id_tipo_grano = request('id_tipo_grano');
         $ingreso->cantidad = request('cantidad');
         $ingreso->condicion = request('condicion');
