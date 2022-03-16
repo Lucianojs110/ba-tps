@@ -25,7 +25,10 @@ class IngresoController extends Controller
         $ingreso->cantidad = request('cantidad');
         $ingreso->condicion = request('condicion');
         $ingreso->humedad = request('humedad');
+        $ingreso->densidad = request('densidad');
         $ingreso->num_carta_porte = request('num_carta_porte');
+        $ingreso->patente_tranporte = request('patente_tranporte');
+        $ingreso->rechazado = request('rechazado');
         $ingreso->save();
 
         //log event//
@@ -55,7 +58,10 @@ class IngresoController extends Controller
         $ingreso->cantidad = request('cantidad');
         $ingreso->condicion = request('condicion');
         $ingreso->humedad = request('humedad');
+        $ingreso->densidad = request('densidad');
         $ingreso->num_carta_porte = request('num_carta_porte');
+        $ingreso->patente_tranporte = request('patente_tranporte');
+        $ingreso->rechazado = request('rechazado');
         $ingreso->update();
         
         //log event//

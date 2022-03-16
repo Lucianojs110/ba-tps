@@ -28,7 +28,10 @@ class CreateIngreso extends Migration
             $table->decimal('cantidad', 10, 2)->nullable();
             $table->string('condicion', 20)->nullable();
             $table->string('humedad', 20)->nullable();
+            $table->string('densidad', 20)->nullable();
+            $table->string('patente_transporte', 20)->nullable();
             $table->string('num_carta_porte', 30)->nullable();
+            $table->boolean('rechazado');
             $table->timestamps();
 
             $table->foreign('id_tipo_grano')
