@@ -20,8 +20,8 @@ class Ingreso extends Model
 
  
 
-    public function tipo_grano()
+    public function producto()
     {
-        return $this->hasOne('App\Models\TipoGrano', 'id', 'id_tipo_grano');
+        return $this->hasOne('App\Models\Productos', 'id', 'id_producto');
     }
 }

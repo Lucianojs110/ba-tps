@@ -11,7 +11,7 @@ class IngresoController extends Controller
 {
     public function index()
     {       
-        return Ingreso::with('proveedor', 'tipo_grano')->get();
+        return Ingreso::with('proveedor', 'producto')->get();
     }
 
     public function store(Request $request){
@@ -21,7 +21,7 @@ class IngresoController extends Controller
         $ingreso->id_proveedor = request('id_proveedor');
         $ingreso->fecha_entrada = request('fecha_entrada');
         $ingreso->hora_entrada = request('hora_entrada');
-        $ingreso->id_tipo_grano = request('id_tipo_grano');
+        $ingreso->id_producto = request('producto');
         $ingreso->cantidad = request('cantidad');
         $ingreso->condicion = request('condicion');
         $ingreso->humedad = request('humedad');
@@ -55,7 +55,7 @@ class IngresoController extends Controller
         $ingreso->id_proveedor = request('id_proveedor');
         $ingreso->fecha_entrada = request('fecha_entrada');
         $ingreso->hora_entrada = request('hora_entrada');
-        $ingreso->id_tipo_grano = request('id_tipo_grano');
+        $ingreso->id_producto = request('id_producto');
         $ingreso->cantidad = request('cantidad');
         $ingreso->condicion = request('condicion');
         $ingreso->humedad = request('humedad');
