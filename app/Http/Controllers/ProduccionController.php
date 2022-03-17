@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Produccion;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class ProduccionController extends Controller
 {
@@ -16,32 +18,27 @@ class ProduccionController extends Controller
 
     public function store(Request $request)
     {
+        $date = Carbon::now();
+        $fecha = $date->format('Y-m-d');
+        $hora = $date->toTimeString();
+
         $produccion = new Produccion();
-        $stock = new Stock();
+    
+    
+        $produccion->id_producto = request('id_producto');
+        $produccion->acciones = request('acciones');
+        $produccion->cantidad = request('cantidad');
+        $produccion->estado = 'en proceso';
+        $produccion->hora = $hora;
+        $produccion->fecha = $fecha;
+        $produccion->save();
 
+        //log event//
+        Log::channel('events')->info('Ingreso nueva Produccion: ip address: '.$request->ip().
+                                    ' | Usuario id: '.$request->user()->id.
+                                    ' | Ingreso: ' .$produccion);
 
-        if(request('acciones') == 'procesar'){
-
-            
-
-            
-        }else{
-
-            $produccion->id_producto = request('id_producto');
-            $produccion->acciones = 'desactivar';
-            $produccion->cantidad = request('cantidad');
-            $produccion->estado = 'finalizado';
-            $produccion->save();
-
-        
-
-            //log event//
-            Log::channel('events')->info('Ingreso nueva Produccion: ip address: '.$request->ip().
-                                        ' | Usuario id: '.$request->user()->id.
-                                        ' | Ingreso: ' .$produccion);
-
-            $Res = Produccion::findorFail($produccion->id);
-        }
+        $Res = Produccion::findorFail($produccion->id);
         
 
         return response()->json([
@@ -60,7 +57,84 @@ class ProduccionController extends Controller
   
     public function update(Request $request, $id)
     {
-        //
+        $produccion = Produccion::findorFail($id);
+        $produccion->estado = 'finalizado';
+        
+        if($produccion->acciones == 'procesar'){
+            if($produccion->id_producto == 1){ //soja
+
+                 $stock = new Stock();
+                 $stock->id_producto = 7;
+                 $stock->cantidad = request('cantidad_aceite');
+                 $stock->save();
+
+                 $stock2 = new Stock();
+                 $stock2->id_producto = 9;
+                 $stock2->cantidad = request('cantidad_expeler');
+                 $stock2->save();
+
+            }
+            elseif($produccion->id_producto == 2){
+
+                 $stock = new Stock();
+                 $stock->id_producto = 8;
+                 $stock->cantidad = request('cantidad_aceite');
+                 $stock->save();
+
+                 $stock = new Stock();
+                 $stock->id_producto = 10;
+                 $stock->cantidad = request('cantidad_expeler');
+                 $stock->save();
+
+            }
+
+           
+        }
+        else{//desactivar
+
+            if($produccion->id_producto == 1){ //soja
+
+                $stock = new Stock();
+                $stock->id_producto = 4; //soja desactivado
+                $stock->cantidad = request('cantidad_aceite');
+                $stock->save();
+    
+            }
+
+            if($produccion->id_producto == 2){ //Girasol
+
+                $stock = new Stock();
+                $stock->id_producto = 5; //soja desactivado
+                $stock->cantidad = request('cantidad_aceite');
+                $stock->save();
+
+            }
+
+            if($produccion->id_producto == 3){ //Maiz
+
+                $stock = new Stock();
+                $stock->id_producto = 6; //Maiz desactivado
+                $stock->cantidad = request('cantidad_aceite');
+                $stock->save();
+
+           }
+
+
+        }
+        
+
+        //log event//
+        Log::channel('events')->info('Ingreso nueva Produccion: ip address: '.$request->ip().
+                                    ' | Usuario id: '.$request->user()->id.
+                                    ' | Ingreso: ' .$produccion);
+
+        $Res = Produccion::findorFail($produccion->id);
+
+        return response()->json([
+            'message' => 'Se ha creado la Produccion correctamente',
+            'Produccion' => $Res
+        ]);
+
     }
 
    

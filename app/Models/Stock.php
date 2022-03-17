@@ -10,7 +10,7 @@ class Stock extends Model
     use HasFactory;
     protected $table = 'stock';
     public $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false;
 
     public function producto()
     {
