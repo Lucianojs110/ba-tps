@@ -31,6 +31,15 @@ Route::apiResource('clientes', 'ClienteController')->middleware('auth:sanctum');
 /*//////INGRESO/////*/
 Route::apiResource('ingreso', 'IngresoController')->middleware('auth:sanctum');
 
+/*//////PRODUCTOS/////*/
+Route::apiResource('productos', 'ProductoController')->middleware('auth:sanctum');
+
+/*//////PRODUCCION/////*/
+Route::apiResource('produccion', 'ProduccionController')->middleware('auth:sanctum');
+
+/*//////STOCK/////*/
+Route::apiResource('stock', 'StockController')->middleware('auth:sanctum');
+
 
 
 

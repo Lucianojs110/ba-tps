@@ -5,20 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ingreso extends Model
+class Stock extends Model
 {
     use HasFactory;
-    protected $table = 'ingresos';
+    protected $table = 'stock';
     public $primaryKey = 'id';
     public $timestamps = true;
-
-    
-    public function proveedor()
-    {
-        return $this->hasOne('App\Models\Proveedor', 'id', 'id_proveedor');
-    }
-
- 
 
     public function producto()
     {

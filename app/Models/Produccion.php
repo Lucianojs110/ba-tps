@@ -5,10 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoGrano extends Model
+class Produccion extends Model
 {
     use HasFactory;
-    protected $table = 'productos';
+    protected $table = 'produccion';
     public $primaryKey = 'id';
     public $timestamps = false;
+
+    public function producto()
+    {
+        return $this->hasOne('App\Models\Producto', 'id', 'id_producto');
+    }
 }
