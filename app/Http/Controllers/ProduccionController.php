@@ -52,15 +52,49 @@ class ProduccionController extends Controller
     public function show($id)
     {
         return  Produccion::findorFail($id);
+        
     }
 
-  
     public function update(Request $request, $id)
+    {
+
+        $date = Carbon::now();
+        $fecha = $date->format('Y-m-d');
+        $hora = $date->toTimeString();
+
+        $produccion = Produccion::findorFail($id);
+    
+    
+        $produccion->id_producto = request('id_producto');
+        $produccion->acciones = request('acciones');
+        $produccion->cantidad = request('cantidad');
+        $produccion->estado = 'en proceso';
+        $produccion->hora = $hora;
+        $produccion->fecha = $fecha;
+        $produccion->update();
+
+        //log event//
+        Log::channel('events')->info('actualizo  Produccion: ip address: '.$request->ip().
+                                    ' | Usuario id: '.$request->user()->id.
+                                    ' | Ingreso: ' .$produccion);
+
+        $Res = Produccion::findorFail($produccion->id);
+        
+
+        return response()->json([
+            'message' => 'Se actualizo la Produccion correctamente',
+            'Produccion' => $Res
+        ]);
+        
+    }
+  
+    public function finalizar(Request $request, $id)
     {
         $produccion = Produccion::findorFail($id);
         $produccion->estado = 'finalizado';
+        $produccion->update();
         
-        if($produccion->acciones == 'procesar'){
+        if($produccion->acciones == 'Procesar'){
             if($produccion->id_producto == 1){ //soja
 
                  $stock = new Stock();
@@ -96,7 +130,7 @@ class ProduccionController extends Controller
 
                 $stock = new Stock();
                 $stock->id_producto = 4; //soja desactivado
-                $stock->cantidad = request('cantidad_aceite');
+                $stock->cantidad = request('cantidad_desactivada');
                 $stock->save();
     
             }
@@ -105,7 +139,7 @@ class ProduccionController extends Controller
 
                 $stock = new Stock();
                 $stock->id_producto = 5; //soja desactivado
-                $stock->cantidad = request('cantidad_aceite');
+                $stock->cantidad = request('cantidad_desactivada');
                 $stock->save();
 
             }
@@ -114,7 +148,7 @@ class ProduccionController extends Controller
 
                 $stock = new Stock();
                 $stock->id_producto = 6; //Maiz desactivado
-                $stock->cantidad = request('cantidad_aceite');
+                $stock->cantidad = request('cantidad_desactivada');
                 $stock->save();
 
            }
@@ -140,6 +174,15 @@ class ProduccionController extends Controller
    
     public function destroy($id)
     {
-        //
+        $prod = Produccion::find($id);
+        $prod->delete();
+        
+        //log event//
+        Log::channel('events')->info('Eliminar produccion: '.$prod);
+        
+        return response()->json([
+            'message' => 'Se ha elminado el registro correctamente',
+            'produccion' => $prod
+        ]);
     }
 }
