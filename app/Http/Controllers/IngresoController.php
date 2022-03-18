@@ -21,7 +21,7 @@ class IngresoController extends Controller
         $ingreso->id_proveedor = request('id_proveedor');
         $ingreso->fecha_entrada = request('fecha_entrada');
         $ingreso->hora_entrada = request('hora_entrada');
-        $ingreso->id_producto = request('id_tipo_grano');
+        $ingreso->id_producto = request('id_producto');
         $ingreso->cantidad = request('cantidad');
         $ingreso->condicion = request('condicion');
         $ingreso->humedad = request('humedad');
