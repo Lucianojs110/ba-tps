@@ -18,19 +18,16 @@ class ProduccionController extends Controller
 
     public function store(Request $request)
     {
-        $date = Carbon::now();
-        $fecha = $date->format('Y-m-d');
-        $hora = $date->toTimeString();
-
-        $produccion = new Produccion();
+        
     
+        $produccion = new Produccion();
     
         $produccion->id_producto = request('id_producto');
         $produccion->acciones = request('acciones');
         $produccion->cantidad = request('cantidad');
         $produccion->estado = 'en proceso';
-        $produccion->hora = $hora;
-        $produccion->fecha = $fecha;
+        $produccion->hora = request('hora');
+        $produccion->fecha = request('fecha');
         $produccion->save();
 
         //log event//
@@ -58,9 +55,7 @@ class ProduccionController extends Controller
     public function update(Request $request, $id)
     {
 
-        $date = Carbon::now();
-        $fecha = $date->format('Y-m-d');
-        $hora = $date->toTimeString();
+    
 
         $produccion = Produccion::findorFail($id);
     
@@ -69,8 +64,8 @@ class ProduccionController extends Controller
         $produccion->acciones = request('acciones');
         $produccion->cantidad = request('cantidad');
         $produccion->estado = 'en proceso';
-        $produccion->hora = $hora;
-        $produccion->fecha = $fecha;
+        $produccion->hora = request('hora');
+        $produccion->fecha = request('fecha');
         $produccion->update();
 
         //log event//
