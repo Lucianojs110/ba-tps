@@ -85,8 +85,12 @@ class ProduccionController extends Controller
   
     public function finalizar(Request $request, $id)
     {
+        $date = Carbon::now();
+        $hora = $date->toTimeString();
+
         $produccion = Produccion::findorFail($id);
         $produccion->estado = 'finalizado';
+        $produccion->hora = $hora;
         $produccion->update();
         
         if($produccion->acciones == 'Procesar'){
@@ -153,7 +157,7 @@ class ProduccionController extends Controller
         
 
         //log event//
-        Log::channel('events')->info('Ingreso nueva Produccion: ip address: '.$request->ip().
+        Log::channel('events')->info('Cantidad desactivada'.request('cantidad_desactivada').
                                     ' | Usuario id: '.$request->user()->id.
                                     ' | Ingreso: ' .$produccion);
 
