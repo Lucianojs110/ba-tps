@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produccion;
 use App\Models\Stock;
+use App\Models\Venta;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
@@ -90,8 +91,12 @@ class ProduccionController extends Controller
 
         $produccion = Produccion::findorFail($id);
         $produccion->estado = 'finalizado';
-        $produccion->hora = $hora;
+        $produccion->hora = request('hora');
+        $produccion->fecha = request('fecha');
         $produccion->update();
+
+        /* Log::channel('events')->info('Produccion'.$produccion).
+                                    ' | Request del front: '.$request->all(); */
         
         if($produccion->acciones == 'Procesar'){
             if($produccion->id_producto == 1){ //soja
@@ -107,7 +112,7 @@ class ProduccionController extends Controller
                  $stock2->save();
 
             }
-            elseif($produccion->id_producto == 2){
+            elseif($produccion->id_producto == 2){//Girasol
 
                  $stock = new Stock();
                  $stock->id_producto = 8;
@@ -120,6 +125,11 @@ class ProduccionController extends Controller
                  $stock->save();
 
             }
+
+        //log event//
+        Log::channel('events')->info('Accion Procesar'.
+                                    ' | Usuario id: '.$request->user()->id.
+                                    ' | Produccion: ' .$produccion);
 
            
         }
@@ -153,13 +163,15 @@ class ProduccionController extends Controller
            }
 
 
+           //log event//
+            Log::channel('events')->info('Accion Desactivar'.
+            ' | Usuario id: '.$request->user()->id.
+            ' | Produccion: ' .$produccion);
+
         }
         
 
-        //log event//
-        Log::channel('events')->info('Cantidad desactivada'.request('cantidad_desactivada').
-                                    ' | Usuario id: '.$request->user()->id.
-                                    ' | Ingreso: ' .$produccion);
+        
 
         $Res = Produccion::findorFail($produccion->id);
 
@@ -168,6 +180,67 @@ class ProduccionController extends Controller
             'Produccion' => $Res
         ]);
 
+    }
+
+    public function ventas_store(Request $request, $id){
+
+        $date = Carbon::now();
+        $hora = $date->toTimeString();
+        $fecha = $date->toDateString();
+
+        $produccion = Produccion::findorFail($id);
+        $produccion->estado = 'Finalizado';
+        $produccion->hora = $hora;
+        $produccion->fecha = $fecha;
+        $produccion->update();
+
+
+        if($produccion->id_producto == 1){ //soja
+
+            $venta = new Venta();
+            $venta->id_producto = 4; //soja desactivado
+            $venta->id_cliente = request('id_cliente');
+            $venta->fecha = request('fecha_venta');
+            $venta->cantidad = request('cantidad_desactivada');
+            $venta->venta_directa = 'T';
+            $venta->save();
+
+        }
+
+        if($produccion->id_producto == 2){ //Girasol
+
+            $venta = new Venta();
+            $venta->id_producto = 5; //girasol desactivado
+            $venta->id_cliente = request('id_cliente');
+            $venta->fecha = request('fecha_venta');
+            $venta->cantidad = request('cantidad_desactivada');
+            $venta->venta_directa = 'T';
+            $venta->save();
+
+        }
+
+        if($produccion->id_producto == 3){ //Maiz
+
+            $venta = new Venta();
+            $venta->id_producto = 6; //Maiz desactivado
+            $venta->id_cliente = request('id_cliente');
+            $venta->fecha = request('fecha_venta');
+            $venta->cantidad = request('cantidad_desactivada');
+            $venta->venta_directa = 'T';
+            $venta->save();
+
+       }
+
+
+
+
+       $Res = Produccion::findorFail($produccion->id);
+
+        return response()->json([
+            'message' => 'Se ha creado la Venta correctamente',
+            'Produccion' => $Res
+        ]);
+        
     }
 
    
