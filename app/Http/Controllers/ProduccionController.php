@@ -184,14 +184,12 @@ class ProduccionController extends Controller
 
     public function ventas_store(Request $request, $id){
 
-        $date = Carbon::now();
-        $hora = $date->toTimeString();
-        $fecha = $date->toDateString();
+        
 
         $produccion = Produccion::findorFail($id);
         $produccion->estado = 'Finalizado';
-        $produccion->hora = $hora;
-        $produccion->fecha = $fecha;
+        $produccion->hora = request('hora');
+        $produccion->fecha = request('fecha');
         $produccion->update();
 
 
