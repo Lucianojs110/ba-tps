@@ -44,6 +44,9 @@ Route::put('/vender/{id}', 'ProduccionController@ventas_store')->middleware('aut
 /*//////STOCK/////*/
 Route::apiResource('stock', 'StockController')->middleware('auth:sanctum');
 
+/*//////TRANSPORTISTAS/////*/
+Route::apiResource('transportistas', 'TransportistaController')->middleware('auth:sanctum');
+
 
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ingreso;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Log;
 
 
@@ -31,6 +32,12 @@ class IngresoController extends Controller
         $ingreso->rechazado = request('rechazado');
         $ingreso->save();
 
+        if(request('rechazado') == 'No'){
+            $stock = new Stock();
+            $stock->id_producto = $ingreso->id_producto;
+            $stock->cantidad = $ingreso->cantidad;
+            $stock->save();
+        }
         //log event//
         Log::channel('events')->info('Ingreso productos: ip address: '.$request->ip().
                                     ' | Usuario id: '.$request->user()->id.
