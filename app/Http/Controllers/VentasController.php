@@ -10,7 +10,7 @@ class VentasController extends Controller
 {
     public function index()
     {       
-        return Venta::with('producto')->get();
+        return Venta::with('producto', 'cliente')->get();
     }
 
     public function store(Request $request)
