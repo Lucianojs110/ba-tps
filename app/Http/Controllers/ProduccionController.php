@@ -198,9 +198,9 @@ class ProduccionController extends Controller
             $venta = new Venta();
             $venta->id_producto = 4; //soja desactivado
             $venta->id_cliente = request('id_cliente');
-            $venta->fecha = request('fecha_venta');
+            $venta->fecha = request('fecha');
             $venta->cantidad = request('cantidad_desactivada');
-            $venta->venta_directa = 'T';
+            $venta->venta_directa = 1;
             $venta->save();
 
         }
@@ -210,9 +210,9 @@ class ProduccionController extends Controller
             $venta = new Venta();
             $venta->id_producto = 5; //girasol desactivado
             $venta->id_cliente = request('id_cliente');
-            $venta->fecha = request('fecha_venta');
+            $venta->fecha = request('fecha');
             $venta->cantidad = request('cantidad_desactivada');
-            $venta->venta_directa = 'T';
+            $venta->venta_directa = 1;
             $venta->save();
 
         }
@@ -222,9 +222,9 @@ class ProduccionController extends Controller
             $venta = new Venta();
             $venta->id_producto = 6; //Maiz desactivado
             $venta->id_cliente = request('id_cliente');
-            $venta->fecha = request('fecha_venta');
+            $venta->fecha = request('fecha');
             $venta->cantidad = request('cantidad_desactivada');
-            $venta->venta_directa = 'T';
+            $venta->venta_directa = 1;
             $venta->save();
 
        }
