@@ -48,5 +48,9 @@ Route::apiResource('stock', 'StockController')->middleware('auth:sanctum');
 Route::apiResource('transportistas', 'TransportistaController')->middleware('auth:sanctum');
 
 
+/*//////Ventas/////*/
+Route::apiResource('ventas', 'VentasController')->middleware('auth:sanctum');
+
+
 
 
