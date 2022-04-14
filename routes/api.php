@@ -28,8 +28,12 @@ Route::apiResource('proveedores', 'ProveedorController')->middleware('auth:sanct
 /*//////CLIENTES/////*/
 Route::apiResource('clientes', 'ClienteController')->middleware('auth:sanctum');
 
+Route::put('/filtroscliente', 'ClienteController@filtros_cliente')->middleware('auth:sanctum');
+
 /*//////INGRESO/////*/
 Route::apiResource('ingreso', 'IngresoController')->middleware('auth:sanctum');
+
+Route::put('/filtrosingreso', 'IngresoController@filtros_cala')->middleware('auth:sanctum');
 
 /*//////PRODUCTOS/////*/
 Route::apiResource('productos', 'ProductoController')->middleware('auth:sanctum');

@@ -101,4 +101,46 @@ class IngresoController extends Controller
             'cliente' => $ingreso
         ]);
     }
+
+    public function filtros_cala(Request $request){
+
+        $nombre_producto= request('grano');
+        $proveedor = request('proveedor');
+        $rechazado= request('rechazado');
+
+        $ingreso = Ingreso::with('proveedor', 'producto')->get();
+
+
+        if(!empty($proveedor)){
+
+            $ingreso = Ingreso::with('proveedor', 'producto')
+                                ->whereHas('proveedor', function($q) use($proveedor){        
+                                    $q->where('nombre','like',"%$proveedor%");
+                                })
+                                ->get();
+
+        }
+
+        if(!empty($nombre_producto)){
+
+            $ingreso = Ingreso::with('proveedor', 'producto')
+                                ->whereHas('producto', function($q) use($nombre_producto){        
+                                    $q->where('nombre','like',"%$nombre_producto%");
+                                })
+                                ->get();
+
+        }
+
+
+        if(!empty($rechazado)){
+
+            $ingreso = Ingreso::with('proveedor', 'producto')
+                        ->where('rechazado',$rechazado)
+                        ->get();
+        }
+
+
+        return $ingreso;
+
+    }
 }
