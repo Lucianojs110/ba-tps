@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Log;
+use DB;
 
 class StockController extends Controller
 {
@@ -82,5 +83,19 @@ class StockController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function stock($id){
+
+        $stock_productos = DB::table('stock')
+                            ->join('productos','productos.id','=','stock.id_producto')
+                            ->select(DB::raw('SUM(cantidad) as Total' ), 'productos.nombre as Nombre')
+                            ->where('id_producto',$id)
+                            ->groupBy('id_producto')     
+                            ->get();
+
+
+
+        return $stock_productos;
     }
 }
