@@ -8,13 +8,52 @@ use App\Models\Stock;
 use App\Models\Venta;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use DB;
 
 class ProduccionController extends Controller
 {
     
-    public function index()
+    public function index(Request $request)
     {
-        return Produccion::with('producto')->get();
+
+        $nombre_producto= request('grano');
+        $accion = request('accion');
+        $desde = request('desde');
+        $hasta = request('hasta');
+
+        $prod = Produccion::with('producto')->get();
+
+        if(!empty($nombre_producto)){
+    
+                $prod = Produccion::with('producto')
+                                    ->whereHas('producto', function($q) use($nombre_producto){        
+                                        $q->where('nombre','like',"%$nombre_producto%");
+                                    })
+                                    ->get();
+           
+        }
+
+        if(!empty($accion)){
+    
+           
+                $prod = Produccion::with('producto')
+                                ->where('acciones','like',"%$accion%")
+                                ->get();
+            
+         }
+         
+        if(!empty($desde) && !empty($hasta)){
+            
+                $prod = Produccion::with('producto')
+                            ->where("fecha",">=", $desde)
+                            ->where("fecha_fin","<=", $hasta)
+                            ->get();
+         }
+  
+
+        return $prod;
+        
+
     }
 
     public function store(Request $request)
@@ -67,6 +106,7 @@ class ProduccionController extends Controller
         $produccion->estado = 'en proceso';
         $produccion->hora = request('hora');
         $produccion->fecha = request('fecha');
+        //$produccion->fecha_fin = 'NULL';
         $produccion->update();
 
         //log event//
@@ -91,8 +131,8 @@ class ProduccionController extends Controller
 
         $produccion = Produccion::findorFail($id);
         $produccion->estado = 'finalizado';
-        $produccion->hora = request('hora');
-        $produccion->fecha = request('fecha');
+        $produccion->hora_fin = request('hora');
+        $produccion->fecha_fin = request('fecha');
         $produccion->update();
 
         /* Log::channel('events')->info('Produccion'.$produccion).
@@ -188,8 +228,8 @@ class ProduccionController extends Controller
 
         $produccion = Produccion::findorFail($id);
         $produccion->estado = 'Finalizado';
-        $produccion->hora = request('hora');
-        $produccion->fecha = request('fecha');
+        $produccion->hora_fin = request('hora');
+        $produccion->fecha_fin = request('fecha');
         $produccion->update();
 
 
@@ -254,5 +294,51 @@ class ProduccionController extends Controller
             'message' => 'Se ha elminado el registro correctamente',
             'produccion' => $prod
         ]);
+    }
+
+    public function filtros_produccion(Request $request){
+
+        $nombre_producto= request('grano');
+        $accion = request('accion');
+        $desde = request('desde');
+        $hasta = request('hasta');
+
+        
+
+        $prod = Produccion::with('producto')->get();
+
+        if(!empty($nombre_producto)){
+    
+           
+
+                $prod = Produccion::with('producto')
+                                    ->whereHas('producto', function($q) use($nombre_producto){        
+                                        $q->where('nombre','like',"%$nombre_producto%");
+                                    })
+                                    ->get();
+           
+        }
+
+        if(!empty($accion)){
+    
+           
+                $prod = Produccion::with('producto')
+                                ->where('acciones','like',"%$accion%")
+                                ->get();
+            
+         }
+         
+         if(!empty($desde) && !empty($hasta)){
+            
+                $prod = Produccion::with('producto')
+                            ->where("fecha",">=", $desde)
+                            ->where("fecha_fin","<=", $hasta)
+                            ->get();
+         }
+         
+
+
+        return $prod;
+
     }
 }

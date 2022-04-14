@@ -41,6 +41,8 @@ Route::put('/finalizar/{id}', 'ProduccionController@finalizar')->middleware('aut
 
 Route::put('/vender/{id}', 'ProduccionController@ventas_store')->middleware('auth:sanctum');
 
+Route::put('/filtrosproduccion', 'ProduccionController@filtros_produccion')->middleware('auth:sanctum');
+
 /*//////STOCK/////*/
 Route::apiResource('stock', 'StockController')->middleware('auth:sanctum');
 
