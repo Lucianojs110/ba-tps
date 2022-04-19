@@ -12,7 +12,41 @@ class IngresoController extends Controller
 {
     public function index()
     {       
-        return Ingreso::with('proveedor', 'producto')->get();
+        $nombre_producto= request('grano');
+        $proveedor = request('proveedor');
+        $rechazado= request('rechazado');
+
+        $ingreso = Ingreso::with('proveedor', 'producto')->get();
+
+
+        if(!empty($proveedor)){
+
+            $ingreso = Ingreso::with('proveedor', 'producto')
+                                ->whereHas('proveedor', function($q) use($proveedor){        
+                                    $q->where('nombre','like',"%$proveedor%");
+                                })
+                                ->get();
+
+        }
+
+        if(!empty($nombre_producto)){
+
+            $ingreso = Ingreso::with('proveedor', 'producto')
+                                ->where('id_producto',$nombre_producto)
+                                ->get();
+
+        }
+
+
+        if(!empty($rechazado)){
+
+            $ingreso = Ingreso::with('proveedor', 'producto')
+                        ->where('rechazado',$rechazado)
+                        ->get();
+        }
+
+
+        return $ingreso;
     }
 
     public function store(Request $request){
@@ -102,45 +136,4 @@ class IngresoController extends Controller
         ]);
     }
 
-    public function filtros_cala(Request $request){
-
-        $nombre_producto= request('grano');
-        $proveedor = request('proveedor');
-        $rechazado= request('rechazado');
-
-        $ingreso = Ingreso::with('proveedor', 'producto')->get();
-
-
-        if(!empty($proveedor)){
-
-            $ingreso = Ingreso::with('proveedor', 'producto')
-                                ->whereHas('proveedor', function($q) use($proveedor){        
-                                    $q->where('nombre','like',"%$proveedor%");
-                                })
-                                ->get();
-
-        }
-
-        if(!empty($nombre_producto)){
-
-            $ingreso = Ingreso::with('proveedor', 'producto')
-                                ->whereHas('producto', function($q) use($nombre_producto){        
-                                    $q->where('nombre','like',"%$nombre_producto%");
-                                })
-                                ->get();
-
-        }
-
-
-        if(!empty($rechazado)){
-
-            $ingreso = Ingreso::with('proveedor', 'producto')
-                        ->where('rechazado',$rechazado)
-                        ->get();
-        }
-
-
-        return $ingreso;
-
-    }
 }

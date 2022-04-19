@@ -11,7 +11,24 @@ class ClienteController extends Controller
 {
     public function index()
     {       
-        return Cliente::all();
+        $cuit= request('cuit');
+        $nombre = request('nombre_cliente');
+
+        $cliente = Cliente::get();
+
+        if(!empty($cuit)){
+
+            $cliente = Cliente::where('num_doc',$cuit)
+                                ->get();
+        }
+
+        if(!empty($nombre)){
+
+            $cliente = Cliente::where('nombre','like',"%$nombre%")
+                                ->get();
+        }
+
+        return $cliente;
     }
 
     public function store(Request $request){
@@ -86,25 +103,4 @@ class ClienteController extends Controller
         ]);
     }
 
-   public function filtros_cliente(Request $request){
-
-            $cuit= request('cuit');
-            $nombre = request('nombre_cliente');
-
-            $cliente = Cliente::get();
-
-            if(!empty($cuit)){
-
-                $cliente = Cliente::where('num_doc',$cuit)
-                                    ->get();
-            }
-
-            if(!empty($nombre)){
-
-                $cliente = Cliente::where('nombre','like',"%$nombre%")
-                                    ->get();
-            }
-
-            return $cliente;
-    }
 }

@@ -41,7 +41,7 @@ class VentasController extends Controller
 
     public function show($id)
     {
-        return  Venta::findorFail($id);
+        return  Venta::with('producto', 'cliente')->findorFail($id);
     }
 
     public function update(Request $request,$id)

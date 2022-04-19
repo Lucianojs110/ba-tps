@@ -13,22 +13,21 @@ use DB;
 class ProduccionController extends Controller
 {
     
-    public function index(Request $request)
+    public function index()
     {
 
-        $nombre_producto= request('grano');
+        $id_grano= request('grano');
         $accion = request('accion');
         $desde = request('desde');
         $hasta = request('hasta');
+        $status = request('estado');
 
         $prod = Produccion::with('producto')->get();
 
-        if(!empty($nombre_producto)){
+        if(!empty($id_grano)){
     
                 $prod = Produccion::with('producto')
-                                    ->whereHas('producto', function($q) use($nombre_producto){        
-                                        $q->where('nombre','like',"%$nombre_producto%");
-                                    })
+                                    ->where('id_producto', $id_grano)
                                     ->get();
            
         }
@@ -49,6 +48,14 @@ class ProduccionController extends Controller
                             ->where("fecha_fin","<=", $hasta)
                             ->get();
          }
+
+         if(!empty($status)){
+    
+            $prod = Produccion::with('producto')
+                                ->where('estado', $status)
+                                ->get();
+       
+        }
   
 
         return $prod;
@@ -294,51 +301,5 @@ class ProduccionController extends Controller
             'message' => 'Se ha elminado el registro correctamente',
             'produccion' => $prod
         ]);
-    }
-
-    public function filtros_produccion(Request $request){
-
-        $nombre_producto= request('grano');
-        $accion = request('accion');
-        $desde = request('desde');
-        $hasta = request('hasta');
-
-        
-
-        $prod = Produccion::with('producto')->get();
-
-        if(!empty($nombre_producto)){
-    
-           
-
-                $prod = Produccion::with('producto')
-                                    ->whereHas('producto', function($q) use($nombre_producto){        
-                                        $q->where('nombre','like',"%$nombre_producto%");
-                                    })
-                                    ->get();
-           
-        }
-
-        if(!empty($accion)){
-    
-           
-                $prod = Produccion::with('producto')
-                                ->where('acciones','like',"%$accion%")
-                                ->get();
-            
-         }
-         
-         if(!empty($desde) && !empty($hasta)){
-            
-                $prod = Produccion::with('producto')
-                            ->where("fecha",">=", $desde)
-                            ->where("fecha_fin","<=", $hasta)
-                            ->get();
-         }
-         
-
-
-        return $prod;
-
     }
 }

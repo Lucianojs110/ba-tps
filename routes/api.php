@@ -28,12 +28,8 @@ Route::apiResource('proveedores', 'ProveedorController')->middleware('auth:sanct
 /*//////CLIENTES/////*/
 Route::apiResource('clientes', 'ClienteController')->middleware('auth:sanctum');
 
-Route::put('/filtroscliente', 'ClienteController@filtros_cliente')->middleware('auth:sanctum');
-
 /*//////INGRESO/////*/
 Route::apiResource('ingreso', 'IngresoController')->middleware('auth:sanctum');
-
-Route::put('/filtrosingreso', 'IngresoController@filtros_cala')->middleware('auth:sanctum');
 
 /*//////PRODUCTOS/////*/
 Route::apiResource('productos', 'ProductoController')->middleware('auth:sanctum');
@@ -45,10 +41,9 @@ Route::put('/finalizar/{id}', 'ProduccionController@finalizar')->middleware('aut
 
 Route::put('/vender/{id}', 'ProduccionController@ventas_store')->middleware('auth:sanctum');
 
-Route::put('/filtrosproduccion', 'ProduccionController@filtros_produccion')->middleware('auth:sanctum');
-
 /*//////STOCK/////*/
 Route::apiResource('stock', 'StockController')->middleware('auth:sanctum');
+
 Route::put('/cantidad/{id_producto}', 'StockController@stock')->middleware('auth:sanctum');
 
 /*//////TRANSPORTISTAS/////*/
