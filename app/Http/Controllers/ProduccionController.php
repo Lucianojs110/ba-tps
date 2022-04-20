@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produccion;
 use App\Models\Stock;
+use App\Models\Producto;
 use App\Models\Venta;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -188,15 +189,26 @@ class ProduccionController extends Controller
                 $stock->id_producto = 4; //soja desactivado
                 $stock->cantidad = request('cantidad_desactivada');
                 $stock->save();
+
+                $stock2 = new Stock();
+                $stock2->id_producto = 1; //soja
+                $stock2->cantidad = $stock->cantidad * -1 ;
+                $stock2->save();
     
             }
 
             if($produccion->id_producto == 2){ //Girasol
 
                 $stock = new Stock();
-                $stock->id_producto = 5; //soja desactivado
+                $stock->id_producto = 5; //girasol desactivado
                 $stock->cantidad = request('cantidad_desactivada');
                 $stock->save();
+
+                $stock3 = new Stock();
+                $stock3->id_producto = 2; //girasol
+                $stock3->cantidad = $stock->cantidad * -1 ;
+                $stock3->save();
+                
 
             }
 
@@ -206,6 +218,11 @@ class ProduccionController extends Controller
                 $stock->id_producto = 6; //Maiz desactivado
                 $stock->cantidad = request('cantidad_desactivada');
                 $stock->save();
+
+                $stock4 = new Stock();
+                $stock4->id_producto = 3; //Maiz
+                $stock4->cantidad = $stock->cantidad * -1 ;
+                $stock4->save();
 
            }
 
@@ -240,13 +257,22 @@ class ProduccionController extends Controller
         $produccion->update();
 
 
+
         if($produccion->id_producto == 1){ //soja
 
+            $producto = Producto::FindOrFail(4);//soja desactivada
+            $cantidad = request('cantidad_desactivada');
+            $neto = $cantidad * $producto->precio_unitario;
+
             $venta = new Venta();
-            $venta->id_producto = 4; //soja desactivado
+            $venta->id_producto = 4; //soja desactivada
             $venta->id_cliente = request('id_cliente');
             $venta->fecha = request('fecha');
             $venta->cantidad = request('cantidad_desactivada');
+            $ventas->precio_unitario = $producto->precio_unitario;
+            $ventas->neto = $neto;
+            $ventas->iva = $neto*0.21;
+            $ventas->total = $neto + $ventas->iva;
             $venta->venta_directa = 1;
             $venta->save();
 
@@ -254,11 +280,24 @@ class ProduccionController extends Controller
 
         if($produccion->id_producto == 2){ //Girasol
 
+            
+            $producto = Producto::FindOrFail(5);//girasol desactivada
+            $cantidad = request('cantidad_desactivada');
+            $neto = $cantidad * $producto->precio_unitario;
+
+            Log::channel('events')->info('LOG GIRASOL'.
+            ' |Precio Unitario: '.$producto->precio_unitario.
+            ' | Producto: ' .$producto);
+
             $venta = new Venta();
             $venta->id_producto = 5; //girasol desactivado
             $venta->id_cliente = request('id_cliente');
             $venta->fecha = request('fecha');
             $venta->cantidad = request('cantidad_desactivada');
+            $ventas->precio_unitario = $producto->precio_unitario;
+            $ventas->neto = $neto;
+            $ventas->iva = $neto*0.21;
+            $ventas->total = $neto + $ventas->iva;
             $venta->venta_directa = 1;
             $venta->save();
 
@@ -266,11 +305,19 @@ class ProduccionController extends Controller
 
         if($produccion->id_producto == 3){ //Maiz
 
+            $producto = Producto::FindOrFail(6);//Maiz desactivado
+            $cantidad = request('cantidad_desactivada');
+            $neto = $cantidad * $producto->precio_unitario;
+
             $venta = new Venta();
             $venta->id_producto = 6; //Maiz desactivado
             $venta->id_cliente = request('id_cliente');
             $venta->fecha = request('fecha');
             $venta->cantidad = request('cantidad_desactivada');
+            $ventas->precio_unitario = $producto->precio_unitario;
+            $ventas->neto = $neto;
+            $ventas->iva = $neto*0.21;
+            $ventas->total = $neto + $ventas->iva;
             $venta->venta_directa = 1;
             $venta->save();
 
