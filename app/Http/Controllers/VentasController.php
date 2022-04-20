@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Venta;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
@@ -15,12 +16,24 @@ class VentasController extends Controller
 
     public function store(Request $request)
     {
+        
+        $id_producto = request('id_producto');
+        $cantidad = request('cantidad');
+        
+        $producto = Producto::FindOrFail($id_producto);
+
+        $neto = $cantidad * $producto->precio_unitario;
+        
         $ventas = new Venta();
 
         $ventas->id_producto = request('id_producto');
         $ventas->id_cliente = request('id_cliente');
         $ventas->fecha = request('fecha');
         $ventas->cantidad = request('cantidad');
+        $ventas->precio_unitario = $producto->precio_unitario;
+        $ventas->neto = $neto;
+        $ventas->iva = $neto*0.21;
+        $ventas->total = $neto + $ventas->iva;
         $ventas->venta_directa = 0;
 
         $ventas->save();

@@ -85,12 +85,11 @@ class StockController extends Controller
         //
     }
 
-    public function stock($id){
+    public function stock(){
 
         $stock_productos = DB::table('stock')
                             ->join('productos','productos.id','=','stock.id_producto')
-                            ->select(DB::raw('SUM(cantidad) as Total' ), 'productos.nombre as Nombre')
-                            ->where('id_producto',$id)
+                            ->select(DB::raw('SUM(cantidad) as Total' ), 'productos.nombre as Nombre', 'id_producto')
                             ->groupBy('id_producto')     
                             ->get();
 
