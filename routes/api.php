@@ -53,6 +53,8 @@ Route::apiResource('transportistas', 'TransportistaController')->middleware('aut
 /*//////Ventas/////*/
 Route::apiResource('ventas', 'VentasController')->middleware('auth:sanctum');
 
+Route::post('/afip/{id}', 'VentasController@caesolicitud')->middleware('auth:sanctum');
+
 
 
 
