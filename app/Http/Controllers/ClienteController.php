@@ -41,6 +41,7 @@ class ClienteController extends Controller
         $cliente->direccion = request('direccion');
         $cliente->email = request('email');
         $cliente->telefono = request('telefono');
+        $cliente->iva = request('iva');
         $cliente->save();
 
         //log event//
@@ -71,6 +72,7 @@ class ClienteController extends Controller
         $cliente->direccion = request('direccion');
         $cliente->email = request('email');
         $cliente->telefono = request('telefono');
+        $cliente->iva = request('iva');
         $cliente->update();
         
         //log event//

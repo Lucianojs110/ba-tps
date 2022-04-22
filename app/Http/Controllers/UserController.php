@@ -24,8 +24,8 @@ class UserController extends Controller
     
     
         $user = new User();
-        $user->name = request('name');
-        $user->last_name = request('last_name');
+        $user->nombre = request('nombre');
+        $user->apellido = request('apellido');
         $user->email = request('email');
         $user->id_role = request('rol');
         $user->password = Hash::make(request('password'));
@@ -54,11 +54,12 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        $user->name = $request->get('name');
-        $user->last_name = $request->get('last_name');
+        $user->nombre = $request->get('nombre');
+        $user->apellido = $request->get('apellido');
         $user->email = $request->get('email');
         $user->id_role = $request->get('rol');
         $pass = $request->get('password');
+        
         if ($pass != null) {
             $user->password = Hash::make(request('password'));
         } else {

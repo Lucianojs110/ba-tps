@@ -122,7 +122,9 @@ class VentasController extends Controller
             ];
     
 
-        if($tipo_iva == 'Resp. Inscripto'){
+        if($tipo_iva == 'RESPONSABLE INSCRIPTO'){
+
+            
             $tipoCbteNumero = 1; //factura A
 
             $ImpTotal = 1;
@@ -138,13 +140,7 @@ class VentasController extends Controller
             $ImpIVA = number_format((float)$ImpIVA, 2, '.', '');
 
             $ImpTot = $ImpNeto; /* + $ImpIVA */
-
-
-
-
-            
         
-                    
         }
 
         else{
@@ -166,9 +162,6 @@ class VentasController extends Controller
 
             $ImpTot = $ImpNeto; /* + $ImpIVA */
             
-            
-            
-
             $date = Carbon::now('America/Argentina/Buenos_Aires');
             $date2 = $date->format('Ymd');
             $dateqr = $date->format('Y-m-d');
@@ -192,7 +185,7 @@ class VentasController extends Controller
                 'ImpTotConc' 	=> 0,   // Importe neto no gravado
                 'ImpNeto' 	=> 1, // Importe neto gravado
                 'ImpOpEx' 	=> 0,   // Importe exento de IVA
-                'ImpIVA' 	=> 1,  //Importe total de IVA ->Si <ImpIVA> es igual a 0 los objetos <IVA> y <AlicIva> solo deben informarse con ImpIVA = 3 (iva 0)
+                'ImpIVA' 	=> 0,  //Importe total de IVA ->Si <ImpIVA> es igual a 0 los objetos <IVA> y <AlicIva> solo deben informarse con ImpIVA = 3 (iva 0)
                 'ImpTrib' 	=> 0,   //Importe total de tributos
                 'MonId' 	=> 'PES', //Tipo de moneda usada en el comprobante (ver tipos disponibles)('PES' para pesos argentinos) 
                 'MonCotiz' 	=> 1,     // Cotización de la moneda usada (1 para pesos argentinos)
@@ -200,7 +193,7 @@ class VentasController extends Controller
                     array(
                         'Id' 		=> 3,  //codigo 3 IVA = 0            // Id del tipo de IVA (5 para 21%)(ver tipos disponibles) 
                         'BaseImp' 	=> 1, // Base imponible
-                        'Importe' 	=> 1 // Importe 
+                        'Importe' 	=> 0.21 // Importe 
                     )
                 ),  
                 
@@ -213,9 +206,9 @@ class VentasController extends Controller
         
             $venta = Venta::findorFail($id_venta);
             
-            $venta->caeNum = $cae;
-            $venta->caeFvto = $vtocae;
-            $venta->tipoCbte = str_pad($punto_v, 4, "0", STR_PAD_LEFT).'-'.str_pad($numComp, 8, "0", STR_PAD_LEFT);
+            $venta->cae = $cae;
+            $venta->vto_cae = $vtocae;
+            //$venta->tipoCbte = str_pad($punto_v, 4, "0", STR_PAD_LEFT).'-'.str_pad($numComp, 8, "0", STR_PAD_LEFT);
             
 
             //$data = '{"ver":1,"fecha":'.$dateqr.',"cuit":'.$cuit_emisor.',"ptoVta":'.$punto_v.',"tipoCmp":'.$tipoCbteNumero.',"nroCmp":'.$numComp.',"importe":'.$ImpTot.',"moneda":"PES","ctz":1,"tipoDocRec":80,"nroDocRec":'.$cuit_os.',"tipoCodAut":"E","codAut":'.$cae.'}';

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Producto;
+use Illuminate\Support\Facades\Log;
 
 class ProductoController extends Controller
 {
@@ -69,7 +70,24 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $producto = Producto::find($id);
+
+        $producto->precio_unitario = request('precio_unitario');
+   
+        $producto->update();
+        
+        //log event//
+        Log::channel('events')->info('Actualizar precio producto: ip address: '.$request->ip().
+                                    ' | Usuario id: '.$request->user()->id.
+                                    ' | producto: ' .$producto);
+        
+        $Res = Producto::findorFail($producto->id);
+    
+
+        return response()->json([
+            'message' => 'Se ha actualizado el producto correctamente',
+            'producto' => $Res
+        ]);
     }
 
     /**
