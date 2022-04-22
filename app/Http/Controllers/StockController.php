@@ -90,10 +90,9 @@ class StockController extends Controller
         
 
         $stock_productos = DB::table('stock')
-        ->join('productos','productos.id','=','stock.id_producto')
+        ->leftjoin('productos','productos.id','=','stock.id_producto')
         ->leftjoin('ventas','ventas.id_producto','=','stock.id_producto')
         ->select(DB::raw("SUM(stock.cantidad) - SUM(IF(ventas.cantidad,ventas.cantidad,'0'))   as Total" ), 'productos.nombre as Nombre', 'stock.id_producto', 'productos.precio_unitario', 'productos.id')
-        ->where('ventas.venta_directa', '0')
         ->groupBy('stock.id_producto')     
         ->get();
 

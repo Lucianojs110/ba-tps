@@ -150,6 +150,7 @@ class ProduccionController extends Controller
                 $stock2->id_producto = 9;
                 $stock2->cantidad = request('cantidad_expeler');
                 $stock2->save();
+
             } elseif ($produccion->id_producto == 2) { //Girasol
 
                 $stock = new Stock();
@@ -157,10 +158,10 @@ class ProduccionController extends Controller
                 $stock->cantidad = request('cantidad_aceite');
                 $stock->save();
 
-                $stock = new Stock();
-                $stock->id_producto = 10;
-                $stock->cantidad = request('cantidad_expeler');
-                $stock->save();
+                $stock2 = new Stock();
+                $stock2->id_producto = 10;
+                $stock2->cantidad = request('cantidad_expeler');
+                $stock2->save();
             }
 
             //log event//
@@ -256,6 +257,11 @@ class ProduccionController extends Controller
             $venta->total = $neto + $venta->iva;
             $venta->venta_directa = 1;
             $venta->save();
+
+            $stock = new Stock();
+            $stock->id_producto = 4;  //soja desactivada
+            $stock->cantidad = $venta->cantidad;
+            $stock->save();
         }
 
         if ($produccion->id_producto == 2) { //Girasol
@@ -265,9 +271,7 @@ class ProduccionController extends Controller
             $cantidad = request('cantidad_desactivada');
             $neto = $cantidad * $producto->precio_unitario;
 
-            /* Log::channel('events')->info('LOG GIRASOL' .
-                ' |Precio Unitario: ' . $producto->precio_unitario .
-                ' | Producto: ' . $producto); */
+       
 
             $venta = new Venta();
             $venta->id_producto = 5; //girasol desactivado
@@ -280,6 +284,11 @@ class ProduccionController extends Controller
             $venta->total = $neto + $venta->iva;
             $venta->venta_directa = 1;
             $venta->save();
+
+            $stock = new Stock();
+            $stock->id_producto = 5;  //girasol desactivado
+            $stock->cantidad = $venta->cantidad;
+            $stock->save();
         }
 
         if ($produccion->id_producto == 3) { //Maiz
@@ -299,6 +308,11 @@ class ProduccionController extends Controller
             $venta->total = $neto + $venta->iva;
             $venta->venta_directa = 1;
             $venta->save();
+
+            $stock = new Stock();
+            $stock->id_producto =  6; //Maiz desactivado
+            $stock->cantidad = $venta->cantidad;
+            $stock->save();
         }
 
 
