@@ -164,19 +164,19 @@ class VentasController extends Controller
                 'CbteDesde' 	=> $numComp,  // Número de comprobante o numero del primer comprobante en caso de ser mas de uno
                 'CbteHasta' 	=> $numComp,  // Número de comprobante o numero del último comprobante en caso de ser mas de uno
                 'CbteFch' 		=> intval($date2), // (Opcional) Fecha del comprobante (yyyymmdd) o fecha actual si es nulo
-                'ImpTotal' 	=> 1.21, // Importe total del comprobante
+                'ImpTotal' 	=> $venta->total, // Importe total del comprobante
                 'ImpTotConc' 	=> 0,   // Importe neto no gravado
-                'ImpNeto' 	=> 1, // Importe neto gravado
+                'ImpNeto' 	=> $venta->neto, // Importe neto gravado
                 'ImpOpEx' 	=> 0,   // Importe exento de IVA
-                'ImpIVA' 	=> 0.21,  //Importe total de IVA ->Si <ImpIVA> es igual a 0 los objetos <IVA> y <AlicIva> solo deben informarse con ImpIVA = 3 (iva 0)
+                'ImpIVA' 	=> $venta->iva,  //Importe total de IVA ->Si <ImpIVA> es igual a 0 los objetos <IVA> y <AlicIva> solo deben informarse con ImpIVA = 3 (iva 0)
                 'ImpTrib' 	=> 0,   //Importe total de tributos
                 'MonId' 	=> 'PES', //Tipo de moneda usada en el comprobante (ver tipos disponibles)('PES' para pesos argentinos) 
                 'MonCotiz' 	=> 1,     // Cotización de la moneda usada (1 para pesos argentinos)
                 'Iva' 		=> array( // (Opcional) Alícuotas asociadas al comprobante
                     array(
                         'Id' 		=> 5,  //codigo 3 IVA = 0            // Id del tipo de IVA (5 para 21%)(ver tipos disponibles) 
-                        'BaseImp' 	=> 1, // Base imponible
-                        'Importe' 	=> 0.21 // Importe 
+                        'BaseImp' 	=> $venta->neto, // Base imponible
+                        'Importe' 	=> $venta->iva // Importe 
                     )
                 ),  
                 
@@ -245,19 +245,19 @@ class VentasController extends Controller
                 'CbteDesde' 	=> $numComp,  // Número de comprobante o numero del primer comprobante en caso de ser mas de uno
                 'CbteHasta' 	=> $numComp,  // Número de comprobante o numero del último comprobante en caso de ser mas de uno
                 'CbteFch' 		=> intval($date2), // (Opcional) Fecha del comprobante (yyyymmdd) o fecha actual si es nulo
-                'ImpTotal' 	=> 1.21, // Importe total del comprobante
+                'ImpTotal' 	=> $venta->total, // Importe total del comprobante
                 'ImpTotConc' 	=> 0,   // Importe neto no gravado
-                'ImpNeto' 	=> 1, // Importe neto gravado
+                'ImpNeto' 	=> $venta->neto, // Importe neto gravado
                 'ImpOpEx' 	=> 0,   // Importe exento de IVA
-                'ImpIVA' 	=> 0.21,  //Importe total de IVA ->Si <ImpIVA> es igual a 0 los objetos <IVA> y <AlicIva> solo deben informarse con ImpIVA = 3 (iva 0)
+                'ImpIVA' 	=> $venta->iva,  //Importe total de IVA ->Si <ImpIVA> es igual a 0 los objetos <IVA> y <AlicIva> solo deben informarse con ImpIVA = 3 (iva 0)
                 'ImpTrib' 	=> 0,   //Importe total de tributos
                 'MonId' 	=> 'PES', //Tipo de moneda usada en el comprobante (ver tipos disponibles)('PES' para pesos argentinos) 
                 'MonCotiz' 	=> 1,     // Cotización de la moneda usada (1 para pesos argentinos)
                 'Iva' 		=> array( // (Opcional) Alícuotas asociadas al comprobante
                     array(
                         'Id' 		=> 5,  //codigo 3 IVA = 0            // Id del tipo de IVA (5 para 21%)(ver tipos disponibles) 
-                        'BaseImp' 	=> 1, // Base imponible
-                        'Importe' 	=> 0.21 // Importe 
+                        'BaseImp' 	=> $venta->neto, // Base imponible
+                        'Importe' 	=> $venta->iva // Importe 
                     )
                 ),  
                 

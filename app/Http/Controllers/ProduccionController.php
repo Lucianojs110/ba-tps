@@ -151,6 +151,11 @@ class ProduccionController extends Controller
                 $stock2->cantidad = request('cantidad_expeler');
                 $stock2->save();
 
+                $stock2 = new Stock();
+                $stock2->id_producto = 1; //soja
+                $stock2->cantidad = $produccion->cantidad * -1;
+                $stock2->save();
+
             } elseif ($produccion->id_producto == 2) { //Girasol
 
                 $stock = new Stock();
@@ -161,6 +166,11 @@ class ProduccionController extends Controller
                 $stock2 = new Stock();
                 $stock2->id_producto = 10;
                 $stock2->cantidad = request('cantidad_expeler');
+                $stock2->save();
+
+                $stock2 = new Stock();
+                $stock2->id_producto = 2; //soja
+                $stock2->cantidad = $produccion->cantidad * -1;
                 $stock2->save();
             }
 
