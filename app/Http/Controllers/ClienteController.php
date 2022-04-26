@@ -35,7 +35,7 @@ class ClienteController extends Controller
 
         $cliente = new Cliente();
         $cliente->nombre = request('nombre');
-        $cliente->tipo_doc = request('tipo_doc');
+        $cliente->tipo_doc = 'CUIT';
         $cliente->num_doc = request('num_doc');
         $cliente->ciudad = request('ciudad');
         $cliente->direccion = request('direccion');
@@ -66,7 +66,6 @@ class ClienteController extends Controller
         $cliente = Cliente::find($id);
 
         $cliente->nombre = request('nombre');
-        $cliente->tipo_doc = request('tipo_doc');
         $cliente->num_doc = request('num_doc');
         $cliente->ciudad = request('ciudad');
         $cliente->direccion = request('direccion');
