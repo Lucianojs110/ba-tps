@@ -55,6 +55,8 @@ Route::apiResource('ventas', 'VentasController')->middleware('auth:sanctum');
 
 Route::post('/afip/{id}', 'VentasController@caesolicitud');
 
+Route::post('/consultarcuit', 'VentasController@consultarcuit');
+
 
 
 

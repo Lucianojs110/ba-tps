@@ -287,10 +287,35 @@ class VentasController extends Controller
             return (["res"=>$res]);
 
         }
+
+        
         
          
 
 
+    }
+
+    public function consultarcuit(Request $request)
+    {
+
+        $options = [                    //options es un array con el CUIT (de la empresa que esta vendiendo)
+            'CUIT' => 30716605872,
+            'production' => True,
+            'cert' => 'TPS.crt',
+            'key' => 'llave.key',
+            ];
+    
+
+        $cuit = request('num_doc');
+        $afip = new Afip($options);
+        $persona = $afip->RegisterScopeFive->GetTaxpayerDetails($cuit);
+        $server_status =  $afip->RegisterScopeFive->GetServerStatus();
+        
+        return response()->json([
+            'persona' => $persona,
+            'estatus' => $server_status
+        ]);
+        
     }
 
   
