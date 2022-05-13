@@ -17,46 +17,46 @@ class ProduccionController extends Controller
     public function index()
     {
 
-        $id_grano = request('grano');
+        $id_producto = request('id_producto');
         $accion = request('accion');
-        $desde = request('desde');
-        $hasta = request('hasta');
-        $status = request('estado');
+        $desde= request('fecha_entrada_inicio');
+        $hasta= request('fecha_entrada_fin');
+        $estado = request('estado');
 
-        $prod = Produccion::with('producto')->get();
+        $prod = Produccion::with('producto');
 
-        if (!empty($id_grano)) {
+        if (!empty($id_producto)) {
 
-            $prod = Produccion::with('producto')
-                ->where('id_producto', $id_grano)
-                ->get();
+            $prod->where('id_producto', $id_producto);
+
         }
 
         if (!empty($accion)) {
 
 
-            $prod = Produccion::with('producto')
-                ->where('acciones', 'like', "%$accion%")
-                ->get();
+            $prod->where('acciones', 'like', "%$accion%");
+               
         }
 
-        if (!empty($desde) && !empty($hasta)) {
+        if (!empty($desde) ) {
 
-            $prod = Produccion::with('producto')
-                ->where("fecha", ">=", $desde)
-                ->where("fecha_fin", "<=", $hasta)
-                ->get();
+            $prod ->where("fecha", ">=", $desde);     
         }
 
-        if (!empty($status)) {
+        if (!empty($hasta)) {
 
-            $prod = Produccion::with('producto')
-                ->where('estado', $status)
-                ->get();
+            $prod->where("fecha_fin", "<=", $hasta);
+             
         }
 
+        if (!empty($estado)) {
 
-        return $prod;
+            $prod->where('estado', $estado);
+              
+        }
+
+        $produccion = $prod->get();
+        return $produccion;
     }
 
     public function store(Request $request)
