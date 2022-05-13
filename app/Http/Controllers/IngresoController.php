@@ -12,41 +12,46 @@ class IngresoController extends Controller
 {
     public function index()
     {       
-        $nombre_producto= request('grano');
+        $id_producto= request('id_producto');
         $proveedor = request('proveedor');
         $rechazado= request('rechazado');
+        $desde= request('fecha_entrada_inicio');
+        $hasta= request('fecha_entrada_fin');
 
-        $ingreso = Ingreso::with('proveedor', 'producto')->get();
+        $ingreso = Ingreso::with('proveedor', 'producto');
 
 
-        if(!empty($proveedor)){
+      
 
-            $ingreso = Ingreso::with('proveedor', 'producto')
-                                ->whereHas('proveedor', function($q) use($proveedor){        
-                                    $q->where('nombre','like',"%$proveedor%");
-                                })
-                                ->get();
+        if(!empty($id_producto)){
 
-        }
-
-        if(!empty($nombre_producto)){
-
-            $ingreso = Ingreso::with('proveedor', 'producto')
-                                ->where('id_producto',$nombre_producto)
-                                ->get();
+            $ingreso ->where('id_producto',$id_producto);
+                                
 
         }
 
 
         if(!empty($rechazado)){
 
-            $ingreso = Ingreso::with('proveedor', 'producto')
-                        ->where('rechazado',$rechazado)
-                        ->get();
+            $ingreso->where('rechazado',$rechazado);
+                        
         }
 
+        if (!empty($desde)) {
 
-        return $ingreso;
+            $ingreso->where("fecha_entrada", ">=", $desde );
+                  
+
+        }
+
+        if (!empty($hasta)) {
+
+            $ingreso->where("fecha_entrada", "<=", $hasta);
+
+        }
+
+        $ingresos = $ingreso->get(); 
+        return $ingresos;
     }
 
     public function store(Request $request){

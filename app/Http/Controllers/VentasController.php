@@ -128,7 +128,7 @@ class VentasController extends Controller
         if($tipo_iva == 'RESPONSABLE INSCRIPTO'){
 
 
-            $tipoCbteNumero = 1; //factura B
+            $tipoCbteNumero = 1; //factura A
         
             $ImpTotal = 1;
             $afip = new Afip($options);
